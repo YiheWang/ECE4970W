@@ -63,7 +63,7 @@
    	 height:190px;
     width:300px;
     position:relative;
-    left:10%;
+    left:30%;
   }
   .status {
     position:absolute;
@@ -111,8 +111,8 @@
   }
   .button_location {
     position:absolute;
-    left:40%;
-    bottom:15%;
+    left:45%;
+    bottom:20%;
   }
   button.reload_button {
 	width: 150px; 
@@ -129,9 +129,9 @@
   .power_duration {
     position:absolute;
     left:40%;
-    top:40%;
+    top:45%;
   }
-  td.duration_table {
+  td {
     text-align:center;
   }
   
@@ -150,7 +150,7 @@
 <img src="tiger.png"  alt="Tiger" class = 'tiger'/>
 <div class = "itemlist-table">
   <h3 class = "pos_left">Table for ItemList</h3>
-  <table border = 1>
+  <table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
         <tr>
             <th>id</th>
             <th>SerialNumber</th>
@@ -191,7 +191,7 @@ echo "</div>";
    
 <div class = "temperature-table">
   <h3 class = "pos_left_little">Table for Temperature measurement</h3>
-	<table border = 1>
+	<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
         <tr>
             <th>id</th>
             <th>Temperature</th>
@@ -243,10 +243,10 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
    echo "<label class = 'effect'>Regular</label><br><br>";
    echo "<label class = 'effect'>Battery</label>";
    if($row[power_status]){
-     echo "<div id = 'circle_red' class = 'circle_move3'></div><br>"; // show the red circle 
+     echo "<div id = 'circle_green' class = 'circle_move3'></div><br>"; // show the green circle 
    }  
    else if(!$row[power_status]){
-     echo "<div id = 'circle_green' class = 'circle_move4'></div><br>";// show the green cirlce 
+     echo "<div id = 'circle_red' class = 'circle_move4'></div><br>";// show the red cirlce 
    }
 ?>    
 </div> 
@@ -277,8 +277,8 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
            if($row1[power_status] == 0) {
              //last line equal to 0
             /* echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
-        		<tr><td class = 'duration_table'>Duration of Power</td></tr>
-        		<tr><td class = 'duration_table'>Regular Power is On</td></tr>
+        		<tr><td>Duration of Power</td></tr>
+        		<tr><td>Regular Power is On</td></tr>
       			</table>";*/
              $sql1 = "SELECT check_time FROM PowerStatus ORDER BY check_time DESC LIMIT 1,1"; //time of second last line
              $sql2 = "SELECT check_time FROM PowerStatus ORDER BY check_time DESC LIMIT 1"; //time of last line
@@ -292,9 +292,12 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
              $m = floor(($timediff%(3600*24))%3600/60); //minute
              $s = floor(($timediff%(3600*24))%60); //second
              echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
-        		<tr><td class = 'duration_table'>Duration of Power</td></tr>
-        		<tr><td class = 'duration_table'>".$d."days ".$h."hours ".$m."minutes ".$s."seconds </td></tr>
-      			</table>";
+             <tr><th></th><th>Duration Of Power</th></tr>
+             <tr><td>Days</td><td>".$d."</td></tr>
+             <tr><td>Hours</td><td>".$h."</td></tr>
+             <tr><td>Minutes</td><td>".$m."</td></tr>
+             <tr><td>Seconds</td><td>".$s."</td></tr>
+             </table>";
            } 
           }           
          }//check if last status of power is 0, which means switch to battery mode
