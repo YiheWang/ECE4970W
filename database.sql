@@ -71,6 +71,24 @@ INSERT INTO PowerStatus VALUES
 (1,0,'2008-08-08 22:26:32');
 
 
+SELECT power_status FROM PowerStatus ORDER BY check_time DESC LIMIT 1,1 /*get last second line*/
+
+/* 
+if(line number <= 1){
+	print: regular power is on
+}
+else if(line number > 1){
+	if(second last line of power_status == 1){
+		if(last line of power_status == 0){
+			print: time difference between last second check_time and last check_time
+		}
+	}
+}
+
+
+*/
+
+
 
 
 

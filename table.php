@@ -46,24 +46,24 @@
   .itemlist-table {
    position:absolute;
 	left:10%;
-	top:45%;
+	top:40%;
   }
   .temperature-table {
    position:absolute;
-	right:12%;
+	right:8%;
 	top:35%;
   }
   .door_status {
     float:left;
-   	 height:100px;
+   	 height:190px;
    	 width:300px;
   }
   .power_status {
    	 float:left;
-   	 height:100px;
+   	 height:190px;
     width:300px;
     position:relative;
-    left:30%;
+    left:10%;
   }
   .status {
     position:absolute;
@@ -96,6 +96,16 @@
     left:150px;
     bottom:40px;
   }
+  .circle_move3 {
+    position:relative;
+    left:180px;
+    bottom:100px;
+  }
+  .circle_move4 {
+    position:relative;
+    left:180px;
+    bottom:40px;
+  }
   img.tiger {
     width: 15%;
   }
@@ -116,6 +126,14 @@
 	color: white; 
 	font-size: 17px;
 }
+  .power_duration {
+    position:absolute;
+    left:40%;
+    top:40%;
+  }
+  td.duration_table {
+    text-align:center;
+  }
   
 </style>
 </head>
@@ -221,18 +239,67 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
    $result4 = mysqli_query($database,$sql4);
   	$row = mysqli_fetch_array($result4);
       
-   echo "<label style='position:relative; left:100px;' class = 'effect'>PowerStatus</label><br><br>";
-   echo "<label class = 'effect'>On</label><br><br>";
-   echo "<label class = 'effect'>Off</label>";
+   echo "<label style='position:relative; left:125px;' class = 'effect'>PowerStatus</label><br><br>";
+   echo "<label class = 'effect'>Regular</label><br><br>";
+   echo "<label class = 'effect'>Battery</label>";
    if($row[power_status]){
-     echo "<div id = 'circle_red' class = 'circle_move1'></div><br>"; // show the red circle 
+     echo "<div id = 'circle_red' class = 'circle_move3'></div><br>"; // show the red circle 
    }  
    else if(!$row[power_status]){
-     echo "<div id = 'circle_green' class = 'circle_move2'></div><br>";// show the green cirlce 
+     echo "<div id = 'circle_green' class = 'circle_move4'></div><br>";// show the green cirlce 
    }
 ?>    
 </div> 
 </div>
+    <div class = 'power_duration'>
+        <?php
+        $sql6 = "SELECT COUNT(*) as count FROM PowerStatus"; // 
+        $result6 = mysqli_query($database,$sql6);
+        $row = mysqli_fetch_assoc($result6);
+        $count = $row['count'];
+        // echo "<p>".count."</p>"; 
+        if($count <= 1){
+          echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
+        		<tr><td class = 'duration_table'>Duration of Power</td></tr>
+        		<tr><td class = 'duration_table'>Regular Power is On</td></tr>
+      			</table>";
+          
+        }//for check the duration, check if there are at least two rows of data 
+      	 else if($count > 1){
+          $sql7 = "SELECT power_status FROM PowerStatus ORDER BY check_time DESC LIMIT 1,1"; // get last second line
+          $sql8 = "SELECT power_status FROM PowerStatus ORDER BY check_time DESC LIMIT 1"; // get last line
+        	$result7 = mysqli_query($database,$sql7);
+          $result8 = mysqli_query($database,$sql8);
+        	$row = mysqli_fetch_array($result7);
+          $row1 = mysqli_fetch_array($result8);
+          if($row[power_status] == 1){
+            //last second line equal to 1
+           if($row1[power_status] == 0) {
+             //last line equal to 0
+            /* echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
+        		<tr><td class = 'duration_table'>Duration of Power</td></tr>
+        		<tr><td class = 'duration_table'>Regular Power is On</td></tr>
+      			</table>";*/
+             $sql1 = "SELECT check_time FROM PowerStatus ORDER BY check_time DESC LIMIT 1,1"; //time of second last line
+             $sql2 = "SELECT check_time FROM PowerStatus ORDER BY check_time DESC LIMIT 1"; //time of last line
+             $result1 = mysqli_query($database,$sql1);
+          	  $result2 = mysqli_query($database,$sql2);
+             $row = mysqli_fetch_array($result1);
+             $row1 = mysqli_fetch_array($result2);
+             $timediff = strtotime ($row1[check_time]) - strtotime ($row[check_time]);
+             $d = floor($timediff/3600/24); //day
+				  $h = floor(($timediff%(3600*24))/3600); //hour
+             $m = floor(($timediff%(3600*24))%3600/60); //minute
+             $s = floor(($timediff%(3600*24))%60); //second
+             echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
+        		<tr><td class = 'duration_table'>Duration of Power</td></tr>
+        		<tr><td class = 'duration_table'>".$d."days ".$h."hours ".$m."minutes ".$s."seconds </td></tr>
+      			</table>";
+           } 
+          }           
+         }//check if last status of power is 0, which means switch to battery mode
+        ?>
+    </div>
 </html>
   
   
