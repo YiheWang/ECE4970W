@@ -235,6 +235,10 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
     
 <div class = 'power_status'>
 <?php
+  	$sql6 = "SELECT COUNT(*) as count FROM PowerStatus"; // 
+   $result6 = mysqli_query($database,$sql6);
+   $row = mysqli_fetch_assoc($result6);
+   $count = $row['count'];
 	$sql4 = "SELECT * FROM PowerStatus ORDER BY check_time DESC LIMIT 1"; // 
    $result4 = mysqli_query($database,$sql4);
   	$row = mysqli_fetch_array($result4);
@@ -242,7 +246,10 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
    echo "<label style='position:relative; left:125px;' class = 'effect'>PowerStatus</label><br><br>";
    echo "<label class = 'effect'>Regular</label><br><br>";
    echo "<label class = 'effect'>Battery</label>";
-   if($row[power_status]){
+  	if($count == 0){
+     echo "<div id = 'circle_green' class = 'circle_move3'></div><br>"; // show the green circle 
+    }//check if the table is empty
+   else if($row[power_status]){
      echo "<div id = 'circle_green' class = 'circle_move3'></div><br>"; // show the green circle 
    }  
    else if(!$row[power_status]){
@@ -258,11 +265,11 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
         $row = mysqli_fetch_assoc($result6);
         $count = $row['count'];
         // echo "<p>".count."</p>"; 
-        if($count <= 1){
-          echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
+        if($count == 1){
+          /*echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
         		<tr><td class = 'duration_table'>Duration of Power</td></tr>
         		<tr><td class = 'duration_table'>Regular Power is On</td></tr>
-      			</table>";
+      			</table>";*/
           
         }//for check the duration, check if there are at least two rows of data 
       	 else if($count > 1){
@@ -272,10 +279,10 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
           $result8 = mysqli_query($database,$sql8);
         	$row = mysqli_fetch_array($result7);
           $row1 = mysqli_fetch_array($result8);
-          if($row[power_status] == 1){
-            //last second line equal to 1
-           if($row1[power_status] == 0) {
-             //last line equal to 0
+          if($row[power_status] == 0){
+            //last second row equal to 0
+           if($row1[power_status] == 1) {
+             //last row equal to 1
             /* echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
         		<tr><td>Duration of Power</td></tr>
         		<tr><td>Regular Power is On</td></tr>
@@ -291,6 +298,7 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
 				  $h = floor(($timediff%(3600*24))/3600); //hour
              $m = floor(($timediff%(3600*24))%3600/60); //minute
              $s = floor(($timediff%(3600*24))%60); //second
+             //echo "<h3>".$d."days".$h."hours".$m."minutes".$s."seconds </h3>"; 
              echo "<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
              <tr><th></th><th>Duration Of Power</th></tr>
              <tr><td>Days</td><td>".$d."</td></tr>

@@ -68,7 +68,15 @@ CREATE TABLE PowerStatus (
 );
 
 INSERT INTO PowerStatus VALUES 
-(1,0,'2008-08-08 22:26:32');
+(1,0,'2008-08-08 22:21:32'),
+(2,0,'2008-08-08 22:22:32'),
+(3,0,'2008-08-08 22:23:32'),
+(4,1,'2018-08-08 12:24:32'),
+(5,0,'2018-08-08 15:25:37'),
+(6,1,'2018-08-08 18:26:42'),
+(7,0,'2018-08-08 20:27:57'),
+(8,1,'2018-08-08 22:29:59');
+
 
 
 SELECT power_status FROM PowerStatus ORDER BY check_time DESC LIMIT 1,1 /*get last second line*/
