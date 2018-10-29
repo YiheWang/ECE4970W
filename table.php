@@ -45,12 +45,17 @@
   }
   .itemlist-table {
    position:absolute;
-	left:10%;
+	left:5%;
 	top:40%;
   }
-  .temperature-table {
+  .temperature_table {
    position:absolute;
-	right:8%;
+	left:38%;
+	top:35%;
+  }
+  .power_status_table {
+   position:absolute;
+	right:7%;
 	top:35%;
   }
   .door_status {
@@ -112,7 +117,7 @@
   .button_location {
     position:absolute;
     left:45%;
-    bottom:20%;
+    bottom:12%;
   }
   button.reload_button {
 	width: 150px; 
@@ -128,8 +133,8 @@
 }
   .power_duration {
     position:absolute;
-    left:40%;
-    top:45%;
+    right:7%;
+    bottom:15%;
   }
   td {
     text-align:center;
@@ -189,8 +194,8 @@ echo "</table>";
 echo "</div>";
 ?>
    
-<div class = "temperature-table">
-  <h3 class = "pos_left_little">Table for Temperature measurement</h3>
+<div class = "temperature_table">
+  <h3 class = "pos_left_little">Table for Temperature Measurement</h3>
 	<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
         <tr>
             <th>id</th>
@@ -208,6 +213,31 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
 	echo "<td>".$row[id]."</td>"; 
 	echo "<td>".$row[temperature]." </td>"; 
 	echo "<td>".$row[check_in_time]." </td>"; 
+	echo "</tr>";
+}
+?>
+  </table>
+</div>
+
+<div class = "power_status_table">
+  <h3>Table for Power Status</h3>
+	<table border = 1 cellspacing=0 cellpadding=0 bordercolor=#000000>
+        <tr>
+            <th>id</th>
+            <th>Power Status</th>
+            <th>Check Time</th>
+        </tr>
+
+<?php
+$sql2 = "SELECT * FROM PowerStatus ORDER BY check_time DESC LIMIT 6 "; // select lastest 6 data
+$result2 = mysqli_query($database,$sql2); // use mysql_query() to send sql apply
+  
+while($row = mysqli_fetch_array($result2)) // use while loop to send result from sql to array
+{
+	echo "<tr>";
+	echo "<td>".$row[id]."</td>"; 
+	echo "<td>".$row[power_status]." </td>"; 
+	echo "<td>".$row[check_time]." </td>"; 
 	echo "</tr>";
 }
 ?>
