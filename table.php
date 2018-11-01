@@ -139,6 +139,10 @@
   td {
     text-align:center;
   }
+  td.high_temp {
+    color:#FF0000;
+    font-weight:bold;
+  }
   
 </style>
 </head>
@@ -211,7 +215,12 @@ while($row = mysqli_fetch_array($result2)) // use while loop to send result from
 {
 	echo "<tr>";
 	echo "<td>".$row[id]."</td>"; 
-	echo "<td>".$row[temperature]." </td>"; 
+  	if($row[temperature] > 5){
+		 echo "<td class = high_temp >".$row[temperature]." </td>"; 
+    }
+  	else{
+      echo "<td>".$row[temperature]." </td>";
+    }
 	echo "<td>".$row[check_in_time]." </td>"; 
 	echo "</tr>";
 }
